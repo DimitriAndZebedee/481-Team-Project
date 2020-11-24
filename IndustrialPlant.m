@@ -51,5 +51,11 @@ a(2,:)=[];
 
 T =tf(a,b);
 
+% 3.1 Controllability matrix
+ControllabilityMatrix = ctrb(A, B);
 
+% 3.2 Observability matrix
+ObservabilityMatrix = obsv(A, C);
 
+% 3.3 Jordan Matrix
+JordanMatrix = jordan(A);
