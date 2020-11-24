@@ -64,25 +64,18 @@ JordanMatrix = jordan(A);
 sys = ss(A, B, C, D);
 impulseResponse = impulse(sys);
 ti = 1:length(impulseResponse);
-
 % Plot Impusle Response
+%uncomment next, to get impulse plot
 %plot(ti, impulseResponse(:,2));
 
 %4.2 Step reponse
 stepResponse = step(sys);
 ts = 1:length(stepResponse);
-
 % plot the step response
+%uncomment next, to get step plot
 %plot(ts, stepResponse);
 
 % 5 Bode plot
-bodePlot = bode(sys);
-%bodeMag = bodePlot(:,1);
-%bodePhase = bodePlot(:,2);
-%bodewout = bodePlot(:,3);
-%tbm = 1:length(bodeMag);
-%tbp = 1:length(bodePhase);
-%tbw = 1:length(bodewout);
-%plot(tbm, bodeMag);
-%plot(tbp, bodePhase);
-%plot(tbw, bodewout);
+%uncomment next, to get bode plot
+%bode(T);
+
