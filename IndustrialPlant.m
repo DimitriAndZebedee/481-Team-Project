@@ -75,7 +75,14 @@ ts = 1:length(stepResponse);
 %uncomment next, to get step plot
 %plot(ts, stepResponse);
 
-% 5 Bode plot
+% 5.1 Bode plot
 %uncomment next, to get bode plot
 %bode(T);
+
+% 5.2 Root Locus
+%uncomment next, to get Root Locus plot
+%rlocus(T);
+
+
+
 
