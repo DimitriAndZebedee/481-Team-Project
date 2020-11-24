@@ -59,3 +59,30 @@ ObservabilityMatrix = obsv(A, C);
 
 % 3.3 Jordan Matrix
 JordanMatrix = jordan(A);
+
+% 4.1 Impulse response
+sys = ss(A, B, C, D);
+impulseResponse = impulse(sys);
+ti = 1:length(impulseResponse);
+
+% Plot Impusle Response
+%plot(ti, impulseResponse(:,2));
+
+%4.2 Step reponse
+stepResponse = step(sys);
+ts = 1:length(stepResponse);
+
+% plot the step response
+%plot(ts, stepResponse);
+
+% 5 Bode plot
+bodePlot = bode(sys);
+%bodeMag = bodePlot(:,1);
+%bodePhase = bodePlot(:,2);
+%bodewout = bodePlot(:,3);
+%tbm = 1:length(bodeMag);
+%tbp = 1:length(bodePhase);
+%tbw = 1:length(bodewout);
+%plot(tbm, bodeMag);
+%plot(tbp, bodePhase);
+%plot(tbw, bodewout);
