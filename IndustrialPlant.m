@@ -87,20 +87,37 @@ tst = 1:length(stepResponseT);
 % 6. PID Controller
 % Hey Dimitri, Just played with the inputs one by one
 % Ki didn't really do anything.
+% the recomended order is Kp, Kd, Ki
 
 Kp = 100;
 Ki = 10;
 Kd = 0.2;
 PIDController = pid(Kp, Ki, Kd);
 PID_Tr = tf(PIDController);
-
 PID_feedback = feedback(PID_Tr*T, 1);
 
+% 7.1 Step response
 stepResponsePID = step(PID_feedback);
 ts_PID = 1:length(stepResponsePID);
 % plot the step response
 %uncomment next, to get step plot
-plot(ts_PID, stepResponsePID);
+%plot(ts_PID, stepResponsePID);
+
+% 7.2 Square Wave Response
+%Generate a square wave
+[u_square,t_square] = gensig("sqaure",5,200);
+%uncomment to get the square wave response
+%lsim(PID_feedback,u_square,t_square);
+
+% 7.3 Sinusoidal Reponse
+%generate a sinwave
+t_sine = linspace(0, 200, 10000);
+u_sine = sin(t_sine*pi*2);
+%uncomment to get the sine wave response
+lsim(PID_feedback,u_sine,t_sine);
+
+
+
 
 
 
