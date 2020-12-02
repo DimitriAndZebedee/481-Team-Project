@@ -89,19 +89,20 @@ tst = 1:length(stepResponseT);
 % Ki didn't really do anything.
 % the recomended order is Kp, Kd, Ki
 
-Kp = 100;
-Ki = 10;
-Kd = 0.2;
+Kp = 80;
+Ki = 0;
+Kd = 0.05;
+
 PIDController = pid(Kp, Ki, Kd);
 PID_Tr = tf(PIDController);
 PID_feedback = feedback(PID_Tr*T, 1);
 
 % 7.1 Step response
-stepResponsePID = step(PID_feedback);
-ts_PID = 1:length(stepResponsePID);
+ts_PID = 0:0.01:0.5;
+stepResponsePID = step(PID_feedback, ts_PID);
 % plot the step response
 %uncomment next, to get step plot
-%plot(ts_PID, stepResponsePID);
+plot(ts_PID, stepResponsePID);
 
 % 7.2 Square Wave Response
 %Generate a square wave
@@ -127,7 +128,7 @@ noise = noise_size * (-2*rand(1,200,1)+1);
 %just figuring out if the noise is working right
 t_noise = 1 : length(noise);
 %plot(t_noise, PID_feedback);
-plot(t_noise, noise);
+%plot(t_noise, noise);
 
 
 
