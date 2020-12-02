@@ -46,7 +46,13 @@ A_ctrl = [0 1 0 0 0; 0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1;
     -charPoly(1) -charPoly(2) -charPoly(3) -charPoly(4) -charPoly(5)]; 
 
 % 3.2 Observability matrix
-ObservabilityMatrix = obsv(A, C);
+Co = [0 0 0 0 1];
+Ao = [0 0 0 0 -1;
+      1 0 0 0 -3.4450;
+      0 1 0 0 -526.0101;
+      0 0 1 0 -888.6531;
+      0 0 0 1 -6.5*10^(-12)];
+ObservabilityMatrix = obsv(Ao, Co);
 
 % 3.3 Jordan Matrix
 Aj = jordan(A);
