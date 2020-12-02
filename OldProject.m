@@ -113,6 +113,7 @@ figure
 rlocus(sys_pid_pos);
 figure
 rlocus(sys_pid_theta);
+
 %addstepdisturbancetochecktherobustness
 %ys/ds = gs/(1+gs.cs)
 loop_distr1 = 1 + loop_contr1;
@@ -132,7 +133,7 @@ Af = A-B*K;
 Nbar = K(1); % reference to remove SS error
 sys_fdbck_pend= ss(Af,B*Nbar,C,D);
 tf_sys_fdbck_pend =tf(sys_fdbck_pend);
-%
+
 % figure
 step(sys_fdbck_pend,5);grid
 legend('Step response for State feedback control');
