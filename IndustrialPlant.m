@@ -114,15 +114,20 @@ ts_PID = 1:length(stepResponsePID);
 t_sine = linspace(0, 200, 10000);
 u_sine = sin(t_sine*pi*2);
 %uncomment to get the sine wave response
-lsim(PID_feedback,u_sine,t_sine);
+%lsim(PID_feedback,u_sine,t_sine);
 
+% 8 Introduce noise
+% generate noise
+%wgn makes an (m,n,p), an mxn matrix with p power Fix power,
+rng('default')
+noise_size = 0.05;
+noise = noise_size * (-2*rand(1,200,1)+1);
+%noisey = noise + PID_feedback;
 
-
-
-
-
-
-
+%just figuring out if the noise is working right
+t_noise = 1 : length(noise);
+%plot(t_noise, PID_feedback);
+plot(t_noise, noise);
 
 
 
