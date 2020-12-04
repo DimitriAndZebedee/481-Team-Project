@@ -21,10 +21,10 @@ A = [ 0 1 0 0;
 B = [0; 1/Jd; 0; 0];
 
 %C matrix with C2 set to 1 for system observability
-C = [0,0,0,0;
+C = [1,0,0,0;
      0,1,0,0; 
-     0,0,0,0;
-     0,0,0,0];
+     0,0,1,0;
+     0,0,0,1];
 
 D = [0;     0;     0;     0];
 
@@ -113,12 +113,12 @@ isstable(plant);
 poles = pole(plant)';
 
 %talk to Dimitry about using poles from code directly above
-%p1 = -10 + 10i;
-%p2 = -10 - 10i;
-%p3 = -50;
-%p4 = -10;
+p1 = -10 + 10i;
+p2 = -10 - 10i;
+p3 = -50;
+p4 = -10;
 
-K = place(A,B,poles);
+K = place(A,B, [p1, p2, p3, p4]);
 sys_closed_loop_with_gain_K = ss(A-B*K,B,C,0);
-%lsim(sys_closed_loop_with_gain_K,y,t,xo);
+%lsim(sys_closed_loop_with_gain_K,y,t,xo
 
