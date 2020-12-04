@@ -95,9 +95,9 @@ tst = 1:length(stepResponseT);
 % Ki didn't really do anything.
 % the recomended order is Kp, Kd, Ki
 
-Kp = 80;
-Ki = 0;
-Kd = 0.05;
+Kp = 0.0109489475340948;
+Ki = 0.0306597041287344;
+Kd = -0.00168563737676081;
 
 PIDController = pid(Kp, Ki, Kd);
 PID_Tr = tf(PIDController);
@@ -136,5 +136,5 @@ t_noise = 1 : length(noise);
 %plot(t_noise, PID_feedback);
 %plot(t_noise, noise);
 
-
+%9 Robustness 
 
