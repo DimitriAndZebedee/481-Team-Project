@@ -103,38 +103,5 @@ PIDController = pid(Kp, Ki, Kd);
 PID_Tr = tf(PIDController);
 PID_feedback = feedback(PID_Tr*T, 1);
 
-% 7.1 Step response
-ts_PID = 0:0.01:0.5;
-stepResponsePID = step(PID_feedback, ts_PID);
-% plot the step response
-%uncomment next, to get step plot
-plot(ts_PID, stepResponsePID);
-
-% 7.2 Square Wave Response
-%Generate a square wave
-[u_square,t_square] = gensig("sqaure",5,200);
-%uncomment to get the square wave response
-%lsim(PID_feedback,u_square,t_square);
-
-% 7.3 Sinusoidal Reponse
-%generate a sinwave
-t_sine = linspace(0, 200, 10000);
-u_sine = sin(t_sine*pi*2);
-%uncomment to get the sine wave response
-%lsim(PID_feedback,u_sine,t_sine);
-
-% 8 Introduce noise
-% generate noise
-%wgn makes an (m,n,p), an mxn matrix with p power Fix power,
-rng('default')
-noise_size = 0.05;
-noise = noise_size * (-2*rand(1,200,1)+1);
-%noisey = noise + PID_feedback;
-
-%just figuring out if the noise is working right
-t_noise = 1 : length(noise);
-%plot(t_noise, PID_feedback);
-%plot(t_noise, noise);
-
 %9 Robustness 
 
