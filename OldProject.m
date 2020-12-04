@@ -1,5 +1,5 @@
 clc;
-clearall;
+clear;
 
 %1.State Space Equations
 A=[0 1 0 0 ;-491 0 -282.45 0; 0 0 0 1;1488 0 885.65 0];
@@ -43,7 +43,7 @@ Do = D;
 % 3.5 Jordan canonical form
 [M,R] = eig(A);
 Aj = jordan(A);
-Bj = inv(M)*B;
+Bj = M\B;
 Cj = C*M;
 Dj = D;
 
@@ -69,7 +69,7 @@ rlocus(theta_tf,'r:');
 %6. PID controllers
 %6.1 Position control
 Kd = 0.55;Kp =4000; Ki = 10;
-contr1=tf([KdKp Ki],[1 0]);
+contr1=tf([Kd Kp Ki],[1 0]);
 loop_contr1 = pos_tf * contr1;
 sys_pid_pos= feedback(loop_contr1,1);
 % Position control - Step response
@@ -90,7 +90,7 @@ legend('Sine response for position control')
 Kp = -1000;
 Kd = -0.27;
 Ki = -100;
-contr2=tf([KdKp Ki],[1 0]);
+contr2=tf([Kd Kp Ki],[1 0]);
 loop_contr2 = contr2 * theta_tf;
 sys_pid_theta= feedback(loop_contr2,1);
 % Angular control - Step response

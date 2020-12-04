@@ -28,6 +28,8 @@ C = [0,0,0,0;
 
 D = [0;     0;     0;     0];
 
+plant = ss(A, B, C, D);
+
 %2) Transfer function obtained from state-space representation
 [a,b] = ss2tf(A,B,C,D);
 
@@ -57,7 +59,7 @@ ObservabilityMatrix = obsv(Ao, Co);
 % 3.3 Jordan Matrix
 Aj = jordan(A);
 Je = eig(A);
-Cj = [Je(1) 0 0 0; 0 Je(2) 0 0; 0 0 Je(3) 0; 0 0 0 Je(4)];
+Cj = Je';
 
 % 4.1 Impulse response
 sys = ss(A, B, C, D);
@@ -91,9 +93,6 @@ tst = 1:length(stepResponseT);
 
 
 % 6. PID Controller
-% Hey Dimitri, Just played with the inputs one by one
-% Ki didn't really do anything.
-% the recomended order is Kp, Kd, Ki
 
 Kp = 0.0109489475340948;
 Ki = 0.0306597041287344;
@@ -108,12 +107,18 @@ PID_feedback = feedback(PID_Tr*T, 1);
 %choose 4 poles to add since A is 4X4. Negative poles will maintain
 %stability
 
-p1 = -10 + 10i;
-p2 = -10 - 10i;
-p3 = -50;
-p4 = -10;
+%checks if plant is stable, with a 1 meaning it is stable
+isstable(plant);
+%returns the poles of the plant, all the poles are negative so it is stable
+poles = pole(plant)';
 
-K = plain(A,B,[p1 p2 p3 p4]);
+%talk to Dimitry about using poles from code directly above
+%p1 = -10 + 10i;
+%p2 = -10 - 10i;
+%p3 = -50;
+%p4 = -10;
+
+K = place(A,B,poles);
 sys_closed_loop_with_gain_K = ss(A-B*K,B,C,0);
-lsim(sys_closed_loop_with_gain_K,y,t,xo);
+%lsim(sys_closed_loop_with_gain_K,y,t,xo);
 
