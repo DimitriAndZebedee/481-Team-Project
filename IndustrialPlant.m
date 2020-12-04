@@ -137,4 +137,16 @@ t_noise = 1 : length(noise);
 %plot(t_noise, noise);
 
 %9 Robustness 
+%controller design
+%choose 4 poles to add since A is 4X4. Negative poles will maintain
+%stability
+
+p1 = -10 + 10i;
+p2 = -10 - 10i;
+p3 = -50;
+p4 = -10;
+
+K = plain(A,B,[p1 p2 p3 p4]);
+sys_closed_loop_with_gain_K = ss(A-B*K,B,C,0);
+lsim(sys_closed_loop_with_gain_K,y,t,xo);
 
