@@ -7,7 +7,7 @@ B = [ 0; 0; 100];
 
 C = [ 1 0 0 ];
 
-poles = eig(A)
+poles = eig(A);
 
 t = 0:0.01:2;
 u = zeros(size(t));
@@ -55,7 +55,7 @@ ylabel('Ball Position (m)')
 axis([0 2 -4E-6 0])
 
 %NBAR
-Nbar = rscale(sys,K)
+Nbar = rscale(sys,K);
 
 %
 lsim(sys_cl,Nbar*u,t)

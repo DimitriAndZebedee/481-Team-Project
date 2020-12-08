@@ -1,3 +1,7 @@
+clc;
+clear;
+
+
 %Coefficient values given in Appendix A.1.2.i, default values are chosen
 
 gr = 4;
@@ -22,8 +26,8 @@ B = [0; 1/Jd; 0; 0];
 
 %C matrix with C2 set to 1 for system observability
 %commented out to for testing
-C = [1,0,0,0;
-     0,0,0,0; 
+C = [0,0,0,0;
+     0,1,0,0; 
      0,0,0,0;
      0,0,0,0];
 
@@ -118,7 +122,7 @@ isstable(plant);
 %returns the poles of the plant, all the poles are negative so it is stable
 poles = pole(plant)';
 
-%talk to Dimitry about using poles from code directly above
+%Seleceted poles
 p1 = -10 + 10i;
 p2 = -10 - 10i;
 p3 = -50;
@@ -127,4 +131,5 @@ p4 = -10;
 K = place(A,B, [p1, p2, p3, p4]);
 sys_closed_loop_with_gain_K = ss(A-B*K,B,C,0);
 %lsim(sys_closed_loop_with_gain_K,y,t,xo
+
 
