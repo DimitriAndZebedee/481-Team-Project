@@ -2,6 +2,7 @@ clc;
 clear;
 
 
+
 %Coefficient values given in Appendix A.1.2.i, default values are chosen
 
 gr = 4;
@@ -128,11 +129,18 @@ poles = pole(plant)';
 %Seleceted poles
 p1 = -10 + 10i;
 p2 = -10 - 10i;
-p3 = -50;
+p3 = -15;
 p4 = -10;
 
+t = 0:0.01:2;
+u = zeros(size(t));
+x0 = [0.01 0 0 0];
+
+sys_1_output = ss(A,B,C1,0);
+[y,t,x] = lsim(sys_1_output,u,t,x0);
+
 K = place(A,B, [p1, p2, p3, p4]);
-sys_closed_loop_with_gain_K = ss(A-B*K,B,C,0);
-%lsim(sys_closed_loop_with_gain_K,y,t,xo
+sys_closed_loop_with_gain_K = ss(A-B*K,B,C1,0);
+lsim(sys_closed_loop_with_gain_K,y,t,x0);
 
 
