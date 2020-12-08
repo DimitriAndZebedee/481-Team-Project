@@ -21,14 +21,20 @@ A = [ 0 1 0 0;
 B = [0; 1/Jd; 0; 0];
 
 %C matrix with C2 set to 1 for system observability
+%commented out to for testing
 C = [1,0,0,0;
-     0,1,0,0; 
-     0,0,1,0;
-     0,0,0,1];
+     0,0,0,0; 
+     0,0,0,0;
+     0,0,0,0];
 
 D = [0;     0;     0;     0];
 
 plant = ss(A, B, C, D);
+
+%Checks to see if the system is observable, if rank 4, it is
+observable = rank(obsv(plant));
+%Checks to see if the system is controllable, if rank 4, it is
+controlable = rank(ctrb(plant));
 
 %2) Transfer function obtained from state-space representation
 [a,b] = ss2tf(A,B,C,D);
