@@ -69,7 +69,9 @@ ObservabilityMatrix = obsv(Ao, Co);
 % 3.3 Jordan Matrix
 Aj = jordan(A);
 Je = eig(A);
-Cj = Je';
+[M,R] = eig(A);
+Cj = C*M;
+%Cj = Je';
 
 % 4.1 Impulse response
 sys = ss(A, B, C, D);
