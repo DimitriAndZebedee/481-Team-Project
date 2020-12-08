@@ -21,25 +21,22 @@ A = [ 0 1 0 0;
 B = [0; 1/Jd; 0; 0];
 
 %C matrix with C2 set to 1 for system observability
-C = [1,0,0,0;
-     0,1,0,0; 
-     0,0,1,0;
-     0,0,0,1];
+C = [0,1,0,0];
 
-D = [0;     0;     0;     0];
+D = [0];
 
 plant = ss(A, B, C, D);
 
 %2) Transfer function obtained from state-space representation
-[a,b] = ss2tf(A,B,C,D);
+%[a,b] = ss2tf(A,B,C,D);
 
 %a is given as array since state space is MIMO by default (although only
 %zeros for rows 1,3 and 4 --> removing zero rows to form 5X1 matrix
-a(1,:)=[];
-a(2,:)=[];
-a(2,:)=[];
+%a(1,:)=[];
+%a(2,:)=[];
+%a(2,:)=[];
 
-T =tf(a,b);
+T =tf(plant);
 
 % 3.1 Controllability matrix
 ControllabilityMatrix = ctrb(A, B);
@@ -59,7 +56,9 @@ ObservabilityMatrix = obsv(Ao, Co);
 % 3.3 Jordan Matrix
 Aj = jordan(A);
 Je = eig(A);
-Cj = Je';
+[M,R] = eig(A);
+Cj = C*M;
+%Cj = Je';
 
 % 4.1 Impulse response
 sys = ss(A, B, C, D);
@@ -67,7 +66,7 @@ impulseResponse = impulse(sys);
 ti = 1:length(impulseResponse);
 % Plot Impusle Response
 %uncomment next, to get impulse plot
-%plot(ti, impulseResponse(:,2));
+%plot(ti, impulseResponse(:,1));
 
 %4.2 Step reponse
 stepResponse = step(sys);
