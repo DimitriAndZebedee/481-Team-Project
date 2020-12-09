@@ -143,4 +143,30 @@ K = place(A,B, [p1, p2, p3, p4]);
 sys_closed_loop_with_gain_K = ss(A-B*K,B,C1,0);
 lsim(sys_closed_loop_with_gain_K,y,t,x0);
 
+%Observer design
+C_obs = [1 0 0 0;
+        0 0 0 0;
+        0 0 0 0;
+        0 0 0 0];
+observerGain = place(A',C_obs',[-20+10i -20-10i -20 -40])'; 
+ observerGain2 = observerGain(:,[2]);   
+ At = [A-B*K B*K; 
+       zeros(size(A)) A-observerGain2*C1];
+   
+ Bt = [B; zeros(size(B))];
+ 
+ Ct = [ C_obs zeros(size(C_obs))];
+ 
+ sys_ob = ss(At,Bt,Ct,0);
+lsim(sys_ob,zeros(size(t)),t,[x0 x0]);
 
+title('Linear Simulation Results (with observer)')
+xlabel('Time (sec)')
+ylabel('Ball Position (m)')
+
+%Reponse plotted
+t = 0:1E-6:6;
+
+[y1,t,x] = lsim(sys,zeros(size(t)),t,x0);
+yout = y1(:,[2]);
+plot(t,yout);
