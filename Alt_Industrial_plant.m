@@ -153,16 +153,16 @@ Ob = place(A',C,obs_poles);
 %K_lqr = lqr(A,B,Q,R);
 
 %Discrete time
-%Ts = 0.1;
-%sys_d = c2d(sys, Ts);
+Ts = 0.1;
+sys_d = c2d(sys, Ts);
 
-%Ad = sys_d.a;
-%Bd = sys_d.b;
-%Cd = sys_d.c;
-%Dd = sys_d.d;
+Ad = sys_d.a;
+Bd = sys_d.b;
+Cd = sys_d.c;
+Dd = sys_d.d;
+
+des_poles_d = [0.3; 0.3; 0.3; 0.3];
+K_d = acker(Ad,Bd,des_poles_d);
 
 %des_poles_d = [0.3; 0.3; 0.3; 0.3];
-%K_d = acker(Ad,Bd,des_poles_d);
-
-%des_poles_d = [0.3; 0.3; 0.3; 0.3];
-%Ob = acker(Ad',Cd',des_poles_d);
+Ob_d = acker(Ad',Cd',des_poles_d);
