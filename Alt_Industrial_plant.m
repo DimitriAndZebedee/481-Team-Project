@@ -145,13 +145,6 @@ K = acker(A,B,des_poles);
 % Observer
 obs_poles = [-30+10i; -30-10i; -30; -50];
 Ob = place(A',C,obs_poles);
-
-%% Unused code
-%lqr
-%Q = eye(4);
-%R = 1;
-%K_lqr = lqr(A,B,Q,R);
-
 %Discrete time
 Ts = 0.1;
 sys_d = c2d(sys, Ts);
@@ -166,3 +159,10 @@ K_d = acker(Ad,Bd,des_poles_d);
 
 %des_poles_d = [0.3; 0.3; 0.3; 0.3];
 Ob_d = acker(Ad',Cd',des_poles_d);
+
+%% Unused code
+%lqr
+%Q = eye(4);
+%R = 1;
+%K_lqr = lqr(A,B,Q,R);
+
