@@ -1,8 +1,7 @@
 clc;
 clear;
 
-
-
+%% Properties
 %Coefficient values given in Appendix A.1.2.i, default values are chosen
 
 gr = 4;
@@ -12,6 +11,7 @@ k = 8.45;
 c1 = 0.004;
 c2 = 0.05;
 
+%% Question 1 Statspace representation
 %State space represesentation of Industrial Emulator based on Page 65 of
 %Lab Manual
 
@@ -41,7 +41,7 @@ observable = rank(obsv(plant));
 %Checks to see if the system is controllable, if rank 4, it is
 controlable = rank(ctrb(plant));
 
-%2) Transfer function obtained from state-space representation
+%% Question 2 Transfer function obtained from state-space representation
 [a,b] = ss2tf(A,B,C,D);
 
 %a is given as array since state space is MIMO by default (although only
@@ -52,6 +52,7 @@ a(2,:)=[];
 
 T =tf(a,b);
 
+%% Question 3 Canonical forms
 % 3.1 Controllability matrix
 ControllabilityMatrix = ctrb(A, B);
 charPoly = poly(A);
@@ -75,6 +76,7 @@ C1 = [0 1 0 0];
 Cj = C1*M;
 %Cj = Je';
 
+%% Question 4 Reponse of the system
 % 4.1 Impulse response
 sys = ss(A, B, C, D);
 impulseResponse = impulse(sys);
@@ -105,9 +107,7 @@ tst = 1:length(stepResponseT);
 %uncomment next, to get Root Locus plot
 %rlocus(T);
 
-
-% 6. PID Controller
-
+%% Question 6 PID Controller
 Kp = 0.0109489475340948;
 Ki = 0.0306597041287344;
 Kd = -0.00168563737676081;
@@ -116,57 +116,53 @@ PIDController = pid(Kp, Ki, Kd);
 PID_Tr = tf(PIDController);
 PID_feedback = feedback(PID_Tr*T, 1);
 
-%9 Robustness 
+%% Question 9 Robustness 
 %controller design
 %choose 4 poles to add since A is 4X4. Negative poles will maintain
 %stability
 
-%checks if plant is stable, with a 1 meaning it is stable
-isstable(plant);
-%returns the poles of the plant, all the poles are negative so it is stable
-poles = pole(plant)';
+%% Observer
+%C = [0;1;0;0]; %controllable not observable
+C = [1;0;0;0]; %observable and controllable
+D = 0;
+x0 = [0;15*pi/180;0;0];
+sys = ss(A,B,C',D);
+%eig(A);% checks stability, if all values are negative it is stable
 
-%Seleceted poles
-p1 = -10 + 10i;
-p2 = -10 - 10i;
-p3 = -15;
-p4 = -10;
+%is the system observable and controllable?
+Sc = ctrb(sys);
+So = obsv(sys);
+rank(Sc);
+rank(So);
 
-t = 0:0.01:2;
-u = zeros(size(t));
-x0 = [0.01 0 0 0];
+%just having a look at the poles and zeros
+%rlocus(sys);
 
-sys_1_output = ss(A,B,C1,0);
-[y,t,x] = lsim(sys_1_output,u,t,x0);
+%  controller
+des_poles = [-3; -3; -3; -3]*0.5;
+K = acker(A,B,des_poles);
 
-K = place(A,B, [p1, p2, p3, p4]);
-sys_closed_loop_with_gain_K = ss(A-B*K,B,C1,0);
-lsim(sys_closed_loop_with_gain_K,y,t,x0);
+% Observer
+obs_poles = [-30+10i; -30-10i; -30; -50];
+Ob = place(A',C,obs_poles);
 
-%Observer design
-C_obs = [1 0 0 0;
-        0 0 0 0;
-        0 0 0 0;
-        0 0 0 0];
-observerGain = place(A',C_obs',[-20+10i -20-10i -20 -40])'; 
- observerGain2 = observerGain(:,[2]);   
- At = [A-B*K B*K; 
-       zeros(size(A)) A-observerGain2*C1];
-   
- Bt = [B; zeros(size(B))];
- 
- Ct = [ C_obs zeros(size(C_obs))];
- 
- sys_ob = ss(At,Bt,Ct,0);
-lsim(sys_ob,zeros(size(t)),t,[x0 x0]);
+%% Unused code
+%lqr
+%Q = eye(4);
+%R = 1;
+%K_lqr = lqr(A,B,Q,R);
 
-title('Linear Simulation Results (with observer)')
-xlabel('Time (sec)')
-ylabel('Ball Position (m)')
+%Discrete time
+%Ts = 0.1;
+%sys_d = c2d(sys, Ts);
 
-%Reponse plotted
-t = 0:1E-6:6;
+%Ad = sys_d.a;
+%Bd = sys_d.b;
+%Cd = sys_d.c;
+%Dd = sys_d.d;
 
-[y1,t,x] = lsim(sys,zeros(size(t)),t,x0);
-yout = y1(:,[2]);
-plot(t,yout);
+%des_poles_d = [0.3; 0.3; 0.3; 0.3];
+%K_d = acker(Ad,Bd,des_poles_d);
+
+%des_poles_d = [0.3; 0.3; 0.3; 0.3];
+%Ob = acker(Ad',Cd',des_poles_d);
