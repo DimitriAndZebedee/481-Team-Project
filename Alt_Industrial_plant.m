@@ -123,10 +123,10 @@ PID_feedback = feedback(PID_Tr*T, 1);
 
 %% Observer
 %C = [0;1;0;0]; %controllable not observable
-C = [1;0;0;0]; %observable and controllable
+C = [1 0 0 0]; %observable and controllable
 D = 0;
 x0 = [0;15*pi/180;0;0];
-sys = ss(A,B,C',D);
+sys = ss(A,B,C,D);
 %eig(A);% checks stability, if all values are negative it is stable
 
 %is the system observable and controllable?
@@ -144,7 +144,7 @@ K = acker(A,B,des_poles);
 
 % Observer
 obs_poles = [-4-4i; -4+4i; -20; -40];
-Ob = place(A',C,obs_poles);
+Ob = place(A',C',obs_poles);
 %Discrete time
 Ts = 0.1;
 sys_d = c2d(sys, Ts);
