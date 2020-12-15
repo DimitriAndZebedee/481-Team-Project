@@ -139,11 +139,11 @@ rank(So);
 %rlocus(sys);
 
 %  controller
-des_poles = [-3; -3; -3; -3]*0.5;
+des_poles = [-10 + 10i;-10 - 10i; -15; -10]
 K = acker(A,B,des_poles);
 
 % Observer
-obs_poles = [-30+10i; -30-10i; -30; -50];
+obs_poles = [-4-4i; -4+4i; -20; -40];
 Ob = place(A',C,obs_poles);
 %Discrete time
 Ts = 0.1;
